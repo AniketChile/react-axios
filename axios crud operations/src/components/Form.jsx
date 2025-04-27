@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from "react";
-import { addPost } from "../api/PostApi";
+import { addPost, updateData } from "../api/PostApi";
 
 function Form({ data, setData,updatedData,setUpdatedData }) {
   const [addNewData, setAddNewData] = useState({
@@ -7,14 +7,24 @@ function Form({ data, setData,updatedData,setUpdatedData }) {
     body: "",
   });
 
+
   const addPosts = async () => {
+
+    const action = e.nativeEvent.submitter.value;
+    if(action === "Add"){
+        addPost();
+    }
+    else if(action === "Edit"){
+        updatePostData();
+    }
+
     try {
       const newPost = {
-        key: data.length + 1, // 👈 Set key here, not while typing!
+        key: data.length + 1,
         title: addNewData.title,
         body: addNewData.body,
       };
-
+  
       await addPost(newPost);
       setData([...data, newPost]);
       console.log("Data after adding:", [...data, newPost]);
@@ -22,7 +32,19 @@ function Form({ data, setData,updatedData,setUpdatedData }) {
     } catch (error) {
       console.error("Error adding post:", error);
     }
+
   };
+
+  const updatePostData = async() =>{
+    const res = await updateData(updateData.id,addPost);
+    console.log(res)
+
+    setData((prev)=>{
+        console.log(prev);
+    })
+  }
+
+  let isEmpty = Object.keys(updatedData).length === 0;
 
   useEffect(() => {
     updatedData && setAddNewData({
@@ -51,8 +73,9 @@ function Form({ data, setData,updatedData,setUpdatedData }) {
         <button
           className="bg-slate-400 border border-black p-4 m-2 rounded"
           onClick={addPosts}
+          value={isEmpty ? "Add" : "Edit"}
         >
-          Add
+          {isEmpty ? "Add" : "Edit"}
         </button>
       </div>
     </>

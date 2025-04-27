@@ -6,7 +6,7 @@ import Form from "./Form";
 
 function Posts() {
   const [data, setData] = useState([]);
-  const [updatedData, setUpdatedData] = useState();
+  const [updatedData, setUpdatedData] = useState({});
 
   const getPostData = async () => {
     const res = await getPosts();
