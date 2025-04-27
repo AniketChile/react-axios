@@ -6,6 +6,7 @@ import Form from "./Form";
 
 function Posts() {
   const [data, setData] = useState([]);
+  const [updatedData, setUpdatedData] = useState();
 
   const getPostData = async () => {
     const res = await getPosts();
@@ -38,7 +39,7 @@ function Posts() {
       <h1 className="text-3xl font-bold mb-6 text-center text-blue-700">
         React Axios
       </h1>
-      <Form data={data} setData={setData}/>
+      <Form data={data} setData={setData} updatedData={updatedData} setUpdatedData={setUpdatedData}/>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
         {data.map((post, index) => (
           <div key={index} className="bg-white shadow-md rounded-xl p-5">
@@ -47,10 +48,14 @@ function Posts() {
               {post.title}
             </h3>
             <p className="text-gray-700 mt-2">{post.body}</p>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            <button 
+              onClick={()=>setUpdatedData(post)}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
               Edit
             </button>{" "}
-            <button onClick={()=>handleDelete(post.id)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+            <button 
+              onClick={()=>handleDelete(post.id)} 
+              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
               Delete
             </button>
           </div>
